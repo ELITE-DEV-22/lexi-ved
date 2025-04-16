@@ -11,8 +11,8 @@ const Navbar = () => {
             <Scale className="h-8 w-8 text-blue-400" />
             <span className="text-2xl font-bold">Lexi</span>
           </Link>
-          <div className="flex space-x-4">
-            <Link to="/" className="hover:text-blue-400 transition-colors">
+          <div className="flex items-center space-x-4">
+            <Link to="/" className="hover:text-blue-400 transition-colors py-2">
               Home
             </Link>
             <Link
