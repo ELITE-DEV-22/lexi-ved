@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Star, BookOpen, MapPin, Phone, Mail, Award, Clock, Briefcase } from 'lucide-react';
+import { Search, Star, BookOpen, MapPin, Phone, Mail, Award, Clock, Briefcase, Calendar, X } from 'lucide-react';
 
 // Mock data for lawyers and related cases
 const MOCK_LAWYERS = {
@@ -125,12 +125,124 @@ const MOCK_RELATED_CASES = {
   ],
 };
 
+const BookingModal = ({ lawyer, onClose }) => {
+  const [step, setStep] = useState('login'); // login or booking
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    date: '',
+    time: '',
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (step === 'login') {
+      // Simulate login
+      setStep('booking');
+    } else {
+      // Simulate booking confirmation
+      alert(`Booking confirmed with ${lawyer.name} for ${formData.date} at ${formData.time}`);
+      onClose();
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white rounded-lg p-8 max-w-md w-full relative">
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+        >
+          <X className="h-6 w-6" />
+        </button>
+
+        <h2 className="text-2xl font-semibold mb-6">
+          {step === 'login' ? 'Login to Book' : 'Schedule Appointment'}
+        </h2>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {step === 'login' ? (
+            <>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  required
+                  className="w-full p-2 border rounded-md"
+                  value={formData.email}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Password
+                </label>
+                <input
+                  type="password"
+                  required
+                  className="w-full p-2 border rounded-md"
+                  value={formData.password}
+                  onChange={(e) =>
+                    setFormData({ ...formData, password: e.target.value })
+                  }
+                />
+              </div>
+            </>
+          ) : (
+            <>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Select Date
+                </label>
+                <input
+                  type="date"
+                  required
+                  className="w-full p-2 border rounded-md"
+                  value={formData.date}
+                  onChange={(e) =>
+                    setFormData({ ...formData, date: e.target.value })
+                  }
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Select Time
+                </label>
+                <input
+                  type="time"
+                  required
+                  className="w-full p-2 border rounded-md"
+                  value={formData.time}
+                  onChange={(e) =>
+                    setFormData({ ...formData, time: e.target.value })
+                  }
+                />
+              </div>
+            </>
+          )}
+          <button
+            type="submit"
+            className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition-colors"
+          >
+            {step === 'login' ? 'Login' : 'Confirm Booking'}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+};
+
 const LegalHelp = () => {
   const [query, setQuery] = useState('');
   const [searchResults, setSearchResults] = useState<{
     lawyers: any[];
     relatedCases: any[];
   }>({ lawyers: [], relatedCases: [] });
+  const [selectedLawyer, setSelectedLawyer] = useState(null);
 
   const handleSearch = () => {
     const lowercaseQuery = query.toLowerCase();
@@ -220,6 +332,13 @@ const LegalHelp = () => {
                         ))}
                       </div>
                     </div>
+                    <button
+                      onClick={() => setSelectedLawyer(lawyer)}
+                      className="mt-4 w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition-colors flex items-center justify-center"
+                    >
+                      <Calendar className="h-5 w-5 mr-2" />
+                      Book Now
+                    </button>
                   </div>
                 </div>
               ))}
@@ -248,6 +367,13 @@ const LegalHelp = () => {
             </div>
           </div>
         </div>
+      )}
+
+      {selectedLawyer && (
+        <BookingModal
+          lawyer={selectedLawyer}
+          onClose={() => setSelectedLawyer(null)}
+        />
       )}
     </div>
   );
