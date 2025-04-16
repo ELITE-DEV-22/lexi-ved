@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Star, BookOpen, MapPin, Phone, Mail, Award, Clock, Briefcase, Calendar, X } from 'lucide-react';
+import { Search, Star, BookOpen, MapPin, Award, Clock, Briefcase, Calendar, X } from 'lucide-react';
 
 // Mock data for lawyers and related cases
 const MOCK_LAWYERS = {
@@ -306,14 +306,6 @@ const LegalHelp = () => {
                     <div className="flex items-center text-gray-600">
                       <MapPin className="h-5 w-5 mr-2" />
                       <span>{lawyer.location}</span>
-                    </div>
-                    <div className="flex items-center text-gray-600">
-                      <Mail className="h-5 w-5 mr-2" />
-                      <span>{lawyer.email}</span>
-                    </div>
-                    <div className="flex items-center text-gray-600">
-                      <Phone className="h-5 w-5 mr-2" />
-                      <span>{lawyer.phone}</span>
                     </div>
                     <div className="flex items-center">
                       <Star className="h-5 w-5 text-yellow-400 mr-1" />
